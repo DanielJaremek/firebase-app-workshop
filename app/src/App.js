@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {database, auth} from './firebase'
+import {database, auth, googleProvider} from './firebase'
 
 class App extends Component {
   state = {
@@ -11,21 +11,8 @@ class App extends Component {
     userData: ''
   }
 
-  emailHandler = (event) => {
-    this.setState({
-      email: event.target.value
-    })
-  }
-
-
-  passwordHandler = (event) => {
-    this.setState({
-      password: event.target.value
-    })
-  }
-
   login = () => {
-    auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+    auth.signInWithPopup(googleProvider)
         .then(() => {
           console.log('LOGGED IN')
 
@@ -62,14 +49,13 @@ class App extends Component {
   }
 
   render() {
-    const app = <div>{this.state.userData || null}
+    const app = <div>
+      {this.state.userData}
       <button onClick={this.logout}>LogOUT</button>
     </div>
     const loginForm = <div>
-      <input type="text" onChange={this.emailHandler} value={this.state.email}/>
-      <input type="password" onChange={this.passwordHandler} value={this.state.password}/>
 
-      <button onClick={this.login}>Login</button>
+      <button onClick={this.login}>Login with Google</button>
 
     </div>
 
